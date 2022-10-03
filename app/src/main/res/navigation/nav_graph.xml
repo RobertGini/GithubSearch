@@ -9,7 +9,9 @@
         android:id="@+id/search_fragment"
         android:name="com.example.githubsearch.ui.view.fragments.screens.SearchFragment"
         android:label="SearchFragment"
-        tools:layout="@layout/fragment_search"/>
+        tools:layout="@layout/fragment_search">
+
+    </fragment>
     <fragment
         android:id="@+id/save_fragment"
         android:name="com.example.githubsearch.ui.view.fragments.screens.SaveFragment"
@@ -28,5 +30,19 @@
         android:id="@+id/viewPagerFragment"
         android:name="com.example.githubsearch.ui.view.fragments.ViewPagerFragment"
         android:label="fragment_view_pager"
-        tools:layout="@layout/fragment_view_pager" />
+        tools:layout="@layout/fragment_view_pager" >
+        <action
+            android:id="@+id/action_viewPagerFragment_to_descriptionFragment"
+            app:destination="@id/descriptionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/descriptionFragment"
+        android:name="com.example.githubsearch.ui.view.fragments.DescriptionFragment"
+        android:label="fragment_description"
+        tools:layout="@layout/fragment_description">
+        <argument
+            android:name="RepoName"
+            android:defaultValue="None"/>
+    </fragment>
+
 </navigation>

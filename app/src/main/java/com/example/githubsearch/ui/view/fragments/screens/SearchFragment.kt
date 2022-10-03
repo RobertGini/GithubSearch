@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.githubsearch.R
 import com.example.githubsearch.data.api.RetrofitClient
 import com.example.githubsearch.data.model.GithubResponse
 import com.example.githubsearch.data.repositories.ApiRepository
@@ -24,6 +26,7 @@ class SearchFragment : Fragment() {
     private lateinit var searchRv: RecyclerView
     private lateinit var searchModel: SearchViewModel
     private var emptyList: ArrayList<GithubResponse> = ArrayList()
+    private var bundle = Bundle()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,6 +84,8 @@ class SearchFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
                     setupObservers(query)
+                    bundle.putString("RepoName",query)
+
                 }
                 return false
             }
@@ -93,7 +98,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun onItemClick(position: Int) {
-
+        findNavController().navigate(R.id.action_viewPagerFragment_to_descriptionFragment, bundle)
     }
 
     companion object {
