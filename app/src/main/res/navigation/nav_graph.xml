@@ -3,21 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/search_fragment">
+    app:startDestination="@id/login_fragment">
 
     <fragment
         android:id="@+id/search_fragment"
-        android:name="com.example.githubsearch.ui.view.fragments.SearchFragment"
+        android:name="com.example.githubsearch.ui.view.fragments.screens.SearchFragment"
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search"/>
     <fragment
         android:id="@+id/save_fragment"
-        android:name="com.example.githubsearch.ui.view.fragments.SaveFragment"
+        android:name="com.example.githubsearch.ui.view.fragments.screens.SaveFragment"
         android:label="SaveFragment"
         tools:layout="@layout/fragment_save"/>
     <fragment
         android:id="@+id/login_fragment"
         android:name="com.example.githubsearch.ui.view.fragments.LoginFragment"
         android:label="LoginFragment"
-        tools:layout="@layout/fragment_login"/>
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_login_fragment_to_viewPagerFragment"
+            app:destination="@id/viewPagerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewPagerFragment"
+        android:name="com.example.githubsearch.ui.view.fragments.ViewPagerFragment"
+        android:label="fragment_view_pager"
+        tools:layout="@layout/fragment_view_pager" />
 </navigation>

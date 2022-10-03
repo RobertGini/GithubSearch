@@ -1,19 +1,22 @@
-package com.example.githubsearch.ui.view.fragments
+package com.example.githubsearch.ui.view.fragments.screens
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.githubsearch.R
+import com.example.githubsearch.databinding.FragmentSaveBinding
 
 class SaveFragment : Fragment() {
+    private lateinit var binding: FragmentSaveBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_save, container, false)
+        binding = FragmentSaveBinding.inflate(inflater, container, false)
+        return binding.root
+
     }
 
     companion object {

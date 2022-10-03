@@ -1,4 +1,4 @@
-package com.example.githubsearch.ui.view.fragments
+package com.example.githubsearch.ui.view.fragments.screens
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,7 +9,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.githubsearch.R
 import com.example.githubsearch.data.api.RetrofitClient
 import com.example.githubsearch.data.model.GithubResponse
 import com.example.githubsearch.data.repositories.ApiRepository

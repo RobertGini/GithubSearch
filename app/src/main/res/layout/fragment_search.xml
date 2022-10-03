@@ -6,7 +6,7 @@
     android:id="@+id/container_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.fragments.SearchFragment">
+    tools:context=".ui.view.fragments.screens.SearchFragment">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_github"
