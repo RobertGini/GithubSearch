@@ -100,6 +100,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun onItemClick(position: Int) {
+
         findNavController().navigate(R.id.action_viewPagerFragment_to_descriptionFragment, bundle)
     }
 

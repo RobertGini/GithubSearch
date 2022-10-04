@@ -25,7 +25,19 @@
                 android:text="@string/repoName"
                 android:textSize="36sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/rc_on_toggle_favorite"/>
+
+            <ImageView
+                android:id="@+id/rc_on_toggle_favorite"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/fui_ic_check_circle_black_128dp" />
+
             <TextView
                 android:id="@+id/rc_forks"
                 android:layout_width="0dp"
@@ -34,18 +46,18 @@
                 android:paddingEnd="15dp"
                 android:text="@string/_7"
                 android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/rc_full_name"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/star_icon"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@id/rc_full_name" />
+
             <ImageView
                 android:id="@+id/star_icon"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/rc_forks"
                 app:layout_constraintTop_toBottomOf="@id/rc_full_name"
-                app:layout_constraintBottom_toBottomOf="parent"
-                tools:srcCompat="@android:drawable/ic_menu_upload"
-                />
+                tools:srcCompat="@android:drawable/ic_menu_upload" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

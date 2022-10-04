@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
 import com.example.githubsearch.R
 import com.example.githubsearch.data.model.GithubResponse
 import com.example.githubsearch.databinding.RepoItemBinding
@@ -49,6 +50,7 @@ class SearchAdapter(
         fun bind(githubResponse: GithubResponse, position: Int) = with(binding) {
             rcFullName.text = githubResponse.items[position].full_name
             rcForks.text = githubResponse.items[position].forks
+            rcOnToggleFavorite.load(R.mipmap.ic_fav)
         }
     }
 }
