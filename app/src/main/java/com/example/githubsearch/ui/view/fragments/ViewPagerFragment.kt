@@ -5,15 +5,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.example.githubsearch.R
 import com.example.githubsearch.databinding.FragmentViewPagerBinding
 import com.example.githubsearch.ui.adapters.ViewPagerAdapter
 import com.example.githubsearch.ui.view.fragments.screens.SaveFragment
 import com.example.githubsearch.ui.view.fragments.screens.SearchFragment
+import com.firebase.ui.auth.AuthUI
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class ViewPagerFragment : Fragment() {
 
     private lateinit var binding: FragmentViewPagerBinding
+    lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,13 +28,19 @@ class ViewPagerFragment : Fragment() {
     ): View? {
         binding = FragmentViewPagerBinding.inflate(inflater, container, false)
         setupViewPager2()
+
+        auth = Firebase.auth
+
+        binding.floatingButton.setOnClickListener{
+            auth.signOut()
+            findNavController().navigate(R.id.action_viewPagerFragment_to_login_fragment)
+        }
         return binding.root
     }
 
-
     private fun setupViewPager2() {
         val adapter = ViewPagerAdapter(
-            requireActivity().supportFragmentManager,
+            parentFragmentManager,
             fragmentList,
             lifecycle,
         )
@@ -38,7 +51,7 @@ class ViewPagerFragment : Fragment() {
     }
 
     companion object {
-        private val fragmentList = listOf<Fragment>(
+        private val fragmentList = listOf(
             SearchFragment.newInstance(),
             SaveFragment.newInstance(),
         )

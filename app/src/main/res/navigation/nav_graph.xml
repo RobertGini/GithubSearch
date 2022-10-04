@@ -34,6 +34,9 @@
         <action
             android:id="@+id/action_viewPagerFragment_to_descriptionFragment"
             app:destination="@id/descriptionFragment" />
+        <action
+            android:id="@+id/action_viewPagerFragment_to_login_fragment"
+            app:destination="@id/login_fragment" />
     </fragment>
     <fragment
         android:id="@+id/descriptionFragment"

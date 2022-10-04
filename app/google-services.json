@@ -14,34 +14,13 @@
       },
       "oauth_client": [
         {
-          "client_id": "136281358996-65741o4gqv4l9ksb6jn064580tsfej98.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBAgciRVsvfUgg6k7g0KRklZn2-TUZCBgY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "136281358996-65741o4gqv4l9ksb6jn064580tsfej98.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:136281358996:android:f75387efc484a74f0faa81",
-        "android_client_info": {
-          "package_name": "com.example.githubsearch.ui.view.fragments"
-        }
-      },
-      "oauth_client": [
+          "client_id": "136281358996-a50mtkm08952ul5rdccbeiu1cht4vft9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.githubsearch",
+            "certificate_hash": "11adf8632230f5e14722a6e89ac931edc36bf5f9"
+          }
+        },
         {
           "client_id": "136281358996-65741o4gqv4l9ksb6jn064580tsfej98.apps.googleusercontent.com",
           "client_type": 3
