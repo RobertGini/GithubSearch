@@ -14,6 +14,7 @@ import com.example.githubsearch.R
 import com.example.githubsearch.data.api.RetrofitClient
 import com.example.githubsearch.data.model.GithubResponse
 import com.example.githubsearch.data.repositories.ApiRepository
+import com.example.githubsearch.data.room.RepoApplication
 import com.example.githubsearch.databinding.FragmentSearchBinding
 import com.example.githubsearch.ui.adapters.SearchAdapter
 import com.example.githubsearch.ui.viewModel.SearchViewModel
@@ -74,7 +75,8 @@ class SearchFragment : Fragment() {
         searchModel = ViewModelProvider(
             this,
             ViewModelFactory(
-                ApiRepository(RetrofitClient.apiService)
+                ApiRepository(RetrofitClient.apiService),
+                (requireActivity().application as RepoApplication).repository
             )
         ).get(SearchViewModel::class.java)
     }

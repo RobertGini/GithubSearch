@@ -10,6 +10,7 @@ import com.example.githubsearch.R
 import com.example.githubsearch.data.api.RetrofitClient
 import com.example.githubsearch.data.model.GithubResponse
 import com.example.githubsearch.data.repositories.ApiRepository
+import com.example.githubsearch.data.room.RepoApplication
 import com.example.githubsearch.databinding.FragmentDescriptionBinding
 import com.example.githubsearch.databinding.FragmentSaveBinding
 import com.example.githubsearch.ui.viewModel.DescriptionViewModel
@@ -65,7 +66,8 @@ class DescriptionFragment : Fragment() {
         descModel = ViewModelProvider(
             this,
             ViewModelFactory(
-                ApiRepository(RetrofitClient.apiService)
+                ApiRepository(RetrofitClient.apiService),
+                (requireActivity().application as RepoApplication).repository
             )
         ).get(DescriptionViewModel::class.java)
     }
