@@ -13,6 +13,7 @@ import com.example.githubsearch.data.repositories.ApiRepository
 import com.example.githubsearch.data.room.RepoApplication
 import com.example.githubsearch.databinding.FragmentDescriptionBinding
 import com.example.githubsearch.databinding.FragmentSaveBinding
+import com.example.githubsearch.domain.RepoItemsEntity
 import com.example.githubsearch.ui.viewModel.DescriptionViewModel
 import com.example.githubsearch.ui.viewModel.SearchViewModel
 import com.example.githubsearch.ui.viewModelFactory.ViewModelFactory
@@ -44,7 +45,7 @@ class DescriptionFragment : Fragment() {
                 when (resource.status) {
                     Status.SUCCESS -> {
                         val data = resource.data!!
-                        setDescInfo(data)
+                        setDescInfo(data.itemsRepo)
                     }
                     Status.ERROR -> {
                     }
@@ -55,11 +56,11 @@ class DescriptionFragment : Fragment() {
         }
     }
 
-    fun setDescInfo(githubResponse: GithubResponse) = with(binding){
-        descRepoName.text = githubResponse.items[0].full_name
-        descDescription.text = githubResponse.items[0].description
-        descForks.text = githubResponse.items[0].forks
-        descCreatedAt.text = githubResponse.items[0].created_at
+    fun setDescInfo(data: List<RepoItemsEntity>) = with(binding){
+        descRepoName.text = data[0].full_name
+        descDescription.text = data[0].description
+        descForks.text = data[0].forks
+        descCreatedAt.text = data[0].created_at
     }
 
     private fun setupViewModel() {

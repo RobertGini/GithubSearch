@@ -16,6 +16,7 @@ import com.example.githubsearch.data.model.GithubResponse
 import com.example.githubsearch.data.repositories.ApiRepository
 import com.example.githubsearch.data.room.RepoApplication
 import com.example.githubsearch.databinding.FragmentSearchBinding
+import com.example.githubsearch.domain.RepoItemsEntity
 import com.example.githubsearch.ui.adapters.SearchAdapter
 import com.example.githubsearch.ui.viewModel.SearchViewModel
 import com.example.githubsearch.ui.viewModelFactory.ViewModelFactory
@@ -36,7 +37,7 @@ class SearchFragment : Fragment() {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
 
         setupViewModel()
-        setupAdapter(emptyList)
+        setupAdapter()
         clickOnSearchView()
         return binding.root
     }
@@ -48,7 +49,7 @@ class SearchFragment : Fragment() {
                     Status.SUCCESS -> {
                         val data = resource.data!!
                         searchAdapter.clearList()
-                        searchAdapter.addList(data)
+                        showRepoList(data.itemsRepo)
                     }
                     Status.ERROR -> {
                     }
@@ -59,16 +60,18 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun setupAdapter(
-        repoList: MutableList<GithubResponse>
-    ) {
+    private fun setupAdapter() {
         searchRv = binding.rcSearch
         binding.rcSearch.setHasFixedSize(true)
         binding.rcSearch.layoutManager = LinearLayoutManager(context)
-        searchAdapter = SearchAdapter(repoList) { position ->
+
+        searchRv.adapter = searchAdapter
+    }
+
+    private fun showRepoList(data: List<RepoItemsEntity>) {
+        searchAdapter = SearchAdapter(data) { position ->
             onItemClick(position)
         }
-        searchRv.adapter = searchAdapter
     }
 
     private fun setupViewModel() {
@@ -86,7 +89,7 @@ class SearchFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
                     setupObservers(query)
-                    bundle.putString("RepoName",query)
+                    bundle.putString("RepoName", query)
 
                 }
                 return false

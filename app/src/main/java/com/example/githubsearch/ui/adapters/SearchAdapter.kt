@@ -8,9 +8,11 @@ import coil.api.load
 import com.example.githubsearch.R
 import com.example.githubsearch.data.model.GithubResponse
 import com.example.githubsearch.databinding.RepoItemBinding
+import com.example.githubsearch.domain.RepoItemsEntity
 
 class SearchAdapter(
-    private var repoList: MutableList<GithubResponse>,
+    private var data: List<RepoItemsEntity>,
+//    private var repoList: MutableList<GithubResponse>,
     private val onItemClick: (position: Int) -> Unit
 ) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
@@ -25,21 +27,20 @@ class SearchAdapter(
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.bind(
-            repoList[position],
+            data[position],
             position
         )
         holder.itemView.setOnClickListener { onItemClick(position) }
     }
 
-    override fun getItemCount(): Int = repoList.size
+    override fun getItemCount(): Int = data.size
 
-    fun addList(githubResponse: GithubResponse){
-        repoList += githubResponse
+    fun addList(response: RepoItemsEntity){
+        data += response
         notifyDataSetChanged()
     }
 
     fun clearList() {
-        repoList.clear()
         notifyDataSetChanged()
     }
 
@@ -47,9 +48,9 @@ class SearchAdapter(
         item: View
     ) : RecyclerView.ViewHolder(item) {
         val binding = RepoItemBinding.bind(item)
-        fun bind(githubResponse: GithubResponse, position: Int) = with(binding) {
-            rcFullName.text = githubResponse.items[position].full_name
-            rcForks.text = githubResponse.items[position].forks
+        fun bind(response: RepoItemsEntity, position: Int) = with(binding) {
+            rcFullName.text = response.full_name
+            rcForks.text = response.forks
             rcOnToggleFavorite.load(R.mipmap.ic_fav)
         }
     }
