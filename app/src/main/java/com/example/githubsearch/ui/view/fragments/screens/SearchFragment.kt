@@ -25,7 +25,7 @@ import com.example.githubsearch.utils.Status
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
     private lateinit var searchAdapter: SearchAdapter
-    private lateinit var searchRv: RecyclerView
+    //private lateinit var searchRv: RecyclerView
     private lateinit var searchModel: SearchViewModel
     private var emptyList: ArrayList<GithubResponse> = ArrayList()
     private var bundle = Bundle()
@@ -61,15 +61,13 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupAdapter() {
-        searchRv = binding.rcSearch
         binding.rcSearch.setHasFixedSize(true)
         binding.rcSearch.layoutManager = LinearLayoutManager(context)
-
-        searchRv.adapter = searchAdapter
+        //searchRv.adapter = searchAdapter
     }
 
     private fun showRepoList(data: List<RepoItemsEntity>) {
-        searchAdapter = SearchAdapter(data) { position ->
+        binding.rcSearch.adapter = SearchAdapter(data) { position ->
             onItemClick(position)
         }
     }
