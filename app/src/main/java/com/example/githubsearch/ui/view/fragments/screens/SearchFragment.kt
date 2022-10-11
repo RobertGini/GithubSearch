@@ -16,6 +16,7 @@ import com.example.githubsearch.R
 import com.example.githubsearch.data.api.RetrofitClient
 import com.example.githubsearch.data.repositories.ApiRepository
 import com.example.githubsearch.data.room.RepoApplication
+import com.example.githubsearch.data.room.RepoDb
 import com.example.githubsearch.databinding.FragmentSearchBinding
 import com.example.githubsearch.domain.RepoItemsEntity
 import com.example.githubsearch.ui.adapters.SearchAdapter
@@ -23,11 +24,14 @@ import com.example.githubsearch.ui.viewModel.SearchViewModel
 import com.example.githubsearch.ui.viewModelFactory.ViewModelFactory
 import com.example.githubsearch.utils.Status
 import com.example.githubsearch.utils.SwipeCallback
+import com.example.githubsearch.utils.hideKeyboard
 
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
+    private lateinit var searchAdapter: SearchAdapter
     private lateinit var searchModel: SearchViewModel
     private lateinit var itemTouchHelper: ItemTouchHelper
+    private lateinit var searchRv: RecyclerView
     private var bundle = Bundle()
 
     override fun onCreateView(
@@ -48,8 +52,8 @@ class SearchFragment : Fragment() {
                 when (resource.status) {
                     Status.SUCCESS -> {
                         val data = resource.data!!
-                        //searchAdapter.clearList()
                         showRepoList(data.itemsRepo)
+                        swipeToFavorite(data.itemsRepo)
                     }
                     Status.ERROR -> {
                     }
@@ -61,16 +65,16 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupAdapter() {
+        searchRv = binding.rcSearch
         binding.rcSearch.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.rcSearch.setHasFixedSize(false)
-
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
     private fun showRepoList(data: List<RepoItemsEntity>) {
-        binding.rcSearch.adapter = SearchAdapter(data) { position ->
+        searchAdapter = SearchAdapter(data) { position ->
             onItemClick(position)
         }
+        searchRv.adapter = searchAdapter
     }
 
     private fun setupViewModel() {
@@ -89,7 +93,7 @@ class SearchFragment : Fragment() {
                 if (query != null) {
                     setupObservers(query)
                     bundle.putString("RepoName", query)
-
+                    hideKeyboard()
                 }
                 return false
             }
@@ -101,8 +105,35 @@ class SearchFragment : Fragment() {
 
     }
 
-    private fun onItemClick(position: Int) {
+    private fun swipeToFavorite(data: List<RepoItemsEntity>) {
+        val simpleCallback = object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean = false
 
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                when(direction) {
+                    ItemTouchHelper.RIGHT -> {
+                        Log.d("Swipe", "Swiped right")
+                        val item = RepoDb(
+                            data[0].full_name,
+                            data[0].description,
+                            data[0].forks,
+                            data[0].created_at)
+                        searchModel.insert(item)
+                    }
+                }
+            }
+        }
+        itemTouchHelper = ItemTouchHelper(simpleCallback)
+        itemTouchHelper.attachToRecyclerView(searchRv)
+    }
+
+    private fun onItemClick(position: Int) {
+        Log.d("Click", "Clicked")
         findNavController().navigate(R.id.action_viewPagerFragment_to_descriptionFragment, bundle)
     }
 

@@ -1,21 +1,17 @@
 package com.example.githubsearch.ui.view.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.githubsearch.R
 import com.example.githubsearch.data.api.RetrofitClient
-import com.example.githubsearch.data.model.GithubResponse
 import com.example.githubsearch.data.repositories.ApiRepository
 import com.example.githubsearch.data.room.RepoApplication
 import com.example.githubsearch.databinding.FragmentDescriptionBinding
-import com.example.githubsearch.databinding.FragmentSaveBinding
 import com.example.githubsearch.domain.RepoItemsEntity
 import com.example.githubsearch.ui.viewModel.DescriptionViewModel
-import com.example.githubsearch.ui.viewModel.SearchViewModel
 import com.example.githubsearch.ui.viewModelFactory.ViewModelFactory
 import com.example.githubsearch.utils.Status
 

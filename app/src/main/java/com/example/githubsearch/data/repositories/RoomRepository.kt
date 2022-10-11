@@ -13,4 +13,8 @@ class RoomRepository(private val repoDao: RepoDao) {
     suspend fun insert(repoDb: RepoDb){
         repoDao.insert(repoDb)
     }
+
+    suspend fun delete(repoDb: RepoDb){
+        repoDao.delete(repoDb)
+    }
 }

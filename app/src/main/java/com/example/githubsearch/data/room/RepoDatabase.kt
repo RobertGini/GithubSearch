@@ -28,10 +28,6 @@ abstract class RepoDatabase : RoomDatabase() {
 
         suspend fun populateDatabase(repoDao: RepoDao) {
             repoDao.deleteAllItems()
-            var item = RepoDb("tetris", "asd", "asd", "asd")
-            repoDao.insert(item)
-            item = RepoDb("adam", "asd", "asd", "asd")
-            repoDao.insert(item)
         }
     }
 

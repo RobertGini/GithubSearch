@@ -12,7 +12,7 @@ interface RepoDao {
     suspend fun insert(vararg repoDb: RepoDb)
 
     @Delete
-    fun delete(repoDb: RepoDb)
+    suspend fun delete(repoDb: RepoDb)
 
     @Query("DELETE FROM repo")
     suspend fun deleteAllItems()

@@ -2,33 +2,36 @@ package com.example.githubsearch.ui.view.fragments.screens
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.R
 import com.example.githubsearch.data.api.RetrofitClient
-import com.example.githubsearch.data.model.GithubResponse
 import com.example.githubsearch.data.repositories.ApiRepository
 import com.example.githubsearch.data.room.RepoApplication
+import com.example.githubsearch.data.room.RepoDatabase
+import com.example.githubsearch.data.room.RepoDb
 import com.example.githubsearch.databinding.FragmentSaveBinding
+import com.example.githubsearch.domain.RepoItemsEntity
 import com.example.githubsearch.ui.adapters.SaveAdapter
-import com.example.githubsearch.ui.adapters.SearchAdapter
 import com.example.githubsearch.ui.viewModel.SaveViewModel
-import com.example.githubsearch.ui.viewModel.SearchViewModel
 import com.example.githubsearch.ui.viewModelFactory.ViewModelFactory
-import com.example.githubsearch.utils.toast
+import com.example.githubsearch.utils.SwipeCallback
+import com.example.githubsearch.utils.hideKeyboard
 
 class SaveFragment : Fragment() {
     private lateinit var binding: FragmentSaveBinding
     private lateinit var saveAdapter: SaveAdapter
     private lateinit var saveRv: RecyclerView
     private lateinit var saveModel: SaveViewModel
+    private lateinit var itemTouchHelper: ItemTouchHelper
     private var bundle = Bundle()
 
     override fun onCreateView(
@@ -39,6 +42,8 @@ class SaveFragment : Fragment() {
         setupViewModel()
         setupAdapter()
         setupList()
+        swipeToDelete()
+        clickOnSearchView()
         return binding.root
     }
 
@@ -70,8 +75,50 @@ class SaveFragment : Fragment() {
         ).get(SaveViewModel::class.java)
     }
 
+    private fun clickOnSearchView() {
+        binding.searchSaved.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    bundle.putString("RepoName", query)
+                    hideKeyboard()
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+
+    }
+
+    private fun swipeToDelete(){
+        val simpleCallback = object :
+            ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                when(direction) {
+                    ItemTouchHelper.LEFT -> {
+                        Log.d("Swipe", "Swiped left")
+                        val position = viewHolder.bindingAdapterPosition
+                        val repoDb: RepoDb = saveAdapter.currentList.get(position)
+                        saveModel.delete(repoDb)
+                    }
+                }
+            }
+        }
+        itemTouchHelper = ItemTouchHelper(simpleCallback)
+        itemTouchHelper.attachToRecyclerView(saveRv)
+    }
+
     private fun onItemClick(position: Int) {
-        Log.d("Click", "Clicked on Item")
+        bundle.putString("RepoName", saveAdapter.currentList[position].full_name)
+        Log.d("Click", saveAdapter.currentList[position].full_name)
         findNavController().navigate(R.id.action_viewPagerFragment_to_descriptionFragment, bundle)
     }
 

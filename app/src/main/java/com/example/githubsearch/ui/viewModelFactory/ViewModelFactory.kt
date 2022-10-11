@@ -15,7 +15,7 @@ class ViewModelFactory(
 ) : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
-            return SearchViewModel(apiRepository) as T
+            return SearchViewModel(apiRepository, roomRepository) as T
         } else if (modelClass.isAssignableFrom(DescriptionViewModel::class.java)) {
             return DescriptionViewModel(apiRepository) as T
         } else if (modelClass.isAssignableFrom(SaveViewModel::class.java)) {

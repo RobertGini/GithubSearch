@@ -8,10 +8,15 @@ import com.example.githubsearch.data.repositories.RoomRepository
 import com.example.githubsearch.data.room.RepoDb
 import kotlinx.coroutines.launch
 
-class SaveViewModel(private val roomRepository: RoomRepository): ViewModel() {
+class SaveViewModel(
+    private val roomRepository: RoomRepository
+    ): ViewModel() {
     val getDataFromDatabase: LiveData<List<RepoDb>> = roomRepository.getDataFromDatabase.asLiveData()
 
     fun insert(repoDb: RepoDb) = viewModelScope.launch {
         roomRepository.insert(repoDb)
+    }
+    fun delete(repoDb: RepoDb) = viewModelScope.launch {
+        roomRepository.delete(repoDb)
     }
 }
