@@ -19,5 +19,4 @@ class ViewPagerAdapter(
         return list[position]
     }
 
-
 }

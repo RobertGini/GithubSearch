@@ -63,7 +63,6 @@ class SearchFragment : Fragment() {
     private fun setupAdapter() {
         binding.rcSearch.setHasFixedSize(true)
         binding.rcSearch.layoutManager = LinearLayoutManager(context)
-        //searchRv.adapter = searchAdapter
     }
 
     private fun showRepoList(data: List<RepoItemsEntity>) {

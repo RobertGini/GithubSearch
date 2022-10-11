@@ -40,7 +40,7 @@ class ViewPagerFragment : Fragment() {
 
     private fun setupViewPager2() {
         val adapter = ViewPagerAdapter(
-            parentFragmentManager,
+            childFragmentManager,
             fragmentList,
             lifecycle,
         )
