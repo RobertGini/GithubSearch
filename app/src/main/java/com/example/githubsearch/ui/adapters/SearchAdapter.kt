@@ -12,7 +12,6 @@ import com.example.githubsearch.domain.RepoItemsEntity
 
 class SearchAdapter(
     private var data: List<RepoItemsEntity>,
-//    private var repoList: MutableList<GithubResponse>,
     private val onItemClick: (position: Int) -> Unit
 ) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 

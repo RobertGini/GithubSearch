@@ -1,18 +1,19 @@
 package com.example.githubsearch.ui.view.fragments.screens
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.R
 import com.example.githubsearch.data.api.RetrofitClient
-import com.example.githubsearch.data.model.GithubResponse
 import com.example.githubsearch.data.repositories.ApiRepository
 import com.example.githubsearch.data.room.RepoApplication
 import com.example.githubsearch.databinding.FragmentSearchBinding
@@ -21,13 +22,12 @@ import com.example.githubsearch.ui.adapters.SearchAdapter
 import com.example.githubsearch.ui.viewModel.SearchViewModel
 import com.example.githubsearch.ui.viewModelFactory.ViewModelFactory
 import com.example.githubsearch.utils.Status
+import com.example.githubsearch.utils.SwipeCallback
 
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
-    private lateinit var searchAdapter: SearchAdapter
-    //private lateinit var searchRv: RecyclerView
     private lateinit var searchModel: SearchViewModel
-    private var emptyList: ArrayList<GithubResponse> = ArrayList()
+    private lateinit var itemTouchHelper: ItemTouchHelper
     private var bundle = Bundle()
 
     override fun onCreateView(
@@ -48,7 +48,7 @@ class SearchFragment : Fragment() {
                 when (resource.status) {
                     Status.SUCCESS -> {
                         val data = resource.data!!
-                        searchAdapter.clearList()
+                        //searchAdapter.clearList()
                         showRepoList(data.itemsRepo)
                     }
                     Status.ERROR -> {
@@ -61,8 +61,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupAdapter() {
-        binding.rcSearch.setHasFixedSize(true)
-        binding.rcSearch.layoutManager = LinearLayoutManager(context)
+        binding.rcSearch.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rcSearch.setHasFixedSize(false)
+
     }
 
     private fun showRepoList(data: List<RepoItemsEntity>) {
