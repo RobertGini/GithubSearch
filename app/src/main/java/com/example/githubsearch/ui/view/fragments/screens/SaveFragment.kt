@@ -104,10 +104,10 @@ class SaveFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 when(direction) {
                     ItemTouchHelper.LEFT -> {
-                        Log.d("Swipe", "Swiped left")
                         val position = viewHolder.bindingAdapterPosition
-                        val repoDb: RepoDb = saveAdapter.currentList.get(position)
+                        val repoDb = saveAdapter.currentList.get(position)
                         saveModel.delete(repoDb)
+                        Log.d("Swipe", "Swiped left")
                     }
                 }
             }

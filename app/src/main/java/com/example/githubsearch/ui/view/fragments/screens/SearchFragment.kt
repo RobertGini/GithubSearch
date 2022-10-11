@@ -117,13 +117,14 @@ class SearchFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 when(direction) {
                     ItemTouchHelper.RIGHT -> {
-                        Log.d("Swipe", "Swiped right")
+                        val position = viewHolder.bindingAdapterPosition
                         val item = RepoDb(
-                            data[0].full_name,
-                            data[0].description,
-                            data[0].forks,
-                            data[0].created_at)
+                            data[position].full_name,
+                            data[position].description,
+                            data[position].forks,
+                            data[position].created_at)
                         searchModel.insert(item)
+                        Log.d("Swipe", "Swiped right")
                     }
                 }
             }
