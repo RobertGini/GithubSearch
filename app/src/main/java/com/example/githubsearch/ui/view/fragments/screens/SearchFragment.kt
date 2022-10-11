@@ -124,7 +124,7 @@ class SearchFragment : Fragment() {
                             data[position].forks,
                             data[position].created_at)
                         searchModel.insert(item)
-                        Log.d("Swipe", "Swiped right")
+                        Log.d("Swipe", data[position].full_name)
                     }
                 }
             }
@@ -134,7 +134,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun onItemClick(position: Int) {
-        Log.d("Click", "Clicked")
+        //Log.d("Click", item)
         findNavController().navigate(R.id.action_viewPagerFragment_to_descriptionFragment, bundle)
     }
 
