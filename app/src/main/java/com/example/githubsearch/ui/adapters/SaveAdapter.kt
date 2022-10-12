@@ -11,7 +11,7 @@ import com.example.githubsearch.data.room.RepoDb
 import com.example.githubsearch.databinding.RepoItemBinding
 
 class SaveAdapter(
-    private val onItemClick: (position: Int) -> Unit
+    private val onItemClick: (data: RepoDb) -> Unit
 ): ListAdapter<RepoDb, SaveAdapter.RepoViewHolder>(RepoComparator()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
         return RepoViewHolder.create(parent)
@@ -20,7 +20,7 @@ class SaveAdapter(
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
         val current = getItem(position)
         holder.bind(currentList[position])
-        holder.itemView.setOnClickListener { onItemClick(position) }
+        holder.itemView.setOnClickListener { onItemClick(currentList[position]) }
     }
 
     class RepoViewHolder(item: View): RecyclerView.ViewHolder(item) {

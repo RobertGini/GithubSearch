@@ -14,11 +14,11 @@ import com.example.githubsearch.domain.RepoItemsEntity
 import com.example.githubsearch.ui.viewModel.DescriptionViewModel
 import com.example.githubsearch.ui.viewModelFactory.ViewModelFactory
 import com.example.githubsearch.utils.Status
+import kotlinx.serialization.json.Json
 
 class DescriptionFragment : Fragment() {
     private lateinit var binding: FragmentDescriptionBinding
     private lateinit var descModel: DescriptionViewModel
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,36 +27,23 @@ class DescriptionFragment : Fragment() {
         binding = FragmentDescriptionBinding.inflate(inflater, container, false)
         setupViewModel()
 
-        val repoName = arguments?.getString("RepoName")
-        if (repoName != null) {
-            setupFields(repoName)
-        }
+        arguments?.takeIf { it.containsKey("RepoName") }?. apply {
 
+            val json = Json { ignoreUnknownKeys = true }
+            val repoName = json.decodeFromString(
+                RepoItemsEntity.serializer(),
+                getString("RepoName")!!
+            )
+            setDescInfo(repoName)
+        }
         return binding.root
     }
 
-    private fun setupFields(query: String) {
-        descModel.getData(query).observe(viewLifecycleOwner) {
-            it?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        val data = resource.data!!
-                        setDescInfo(data.itemsRepo)
-                    }
-                    Status.ERROR -> {
-                    }
-                    Status.LOADING -> {
-                    }
-                }
-            }
-        }
-    }
-
-    fun setDescInfo(data: List<RepoItemsEntity>) = with(binding){
-        descRepoName.text = data[0].full_name
-        descDescription.text = data[0].description
-        descForks.text = data[0].forks
-        descCreatedAt.text = data[0].created_at
+    fun setDescInfo(data: RepoItemsEntity) = with(binding){
+        descRepoName.text = data.full_name
+        descDescription.text = data.description
+        descForks.text = data.forks
+        descCreatedAt.text = data.created_at
     }
 
     private fun setupViewModel() {

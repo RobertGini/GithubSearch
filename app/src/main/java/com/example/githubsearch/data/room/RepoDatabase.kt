@@ -28,6 +28,8 @@ abstract class RepoDatabase : RoomDatabase() {
 
         suspend fun populateDatabase(repoDao: RepoDao) {
             repoDao.deleteAllItems()
+            val item = RepoDb("","","","")
+            repoDao.insert(item)
         }
     }
 

@@ -3,10 +3,11 @@ package com.example.githubsearch.data.room
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.io.Serializable
+import kotlinx.serialization.Serializable
 
+@Serializable
 @Entity(tableName = "repo")
-class RepoDb(
+data class RepoDb(
     @ColumnInfo(name = "full_name")
     val full_name: String,
 
@@ -19,7 +20,8 @@ class RepoDb(
     @ColumnInfo(name = "created_at")
     val created_at: String,
 
-) : Serializable {
+)  {
+    @Serializable
     @PrimaryKey(autoGenerate = true)
     var id = 0
 }

@@ -16,15 +16,13 @@ import com.example.githubsearch.R
 import com.example.githubsearch.data.api.RetrofitClient
 import com.example.githubsearch.data.repositories.ApiRepository
 import com.example.githubsearch.data.room.RepoApplication
-import com.example.githubsearch.data.room.RepoDatabase
 import com.example.githubsearch.data.room.RepoDb
 import com.example.githubsearch.databinding.FragmentSaveBinding
-import com.example.githubsearch.domain.RepoItemsEntity
 import com.example.githubsearch.ui.adapters.SaveAdapter
 import com.example.githubsearch.ui.viewModel.SaveViewModel
 import com.example.githubsearch.ui.viewModelFactory.ViewModelFactory
-import com.example.githubsearch.utils.SwipeCallback
 import com.example.githubsearch.utils.hideKeyboard
+import kotlinx.serialization.json.Json
 
 class SaveFragment : Fragment() {
     private lateinit var binding: FragmentSaveBinding
@@ -116,9 +114,10 @@ class SaveFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(saveRv)
     }
 
-    private fun onItemClick(position: Int) {
-        bundle.putString("RepoName", saveAdapter.currentList[position].full_name)
-        Log.d("Click", saveAdapter.currentList[position].full_name)
+    private fun onItemClick(data: RepoDb) {
+        val jsonRepo = Json.encodeToString(RepoDb.serializer(), data)
+        bundle.putString("RepoName", jsonRepo)
+        Log.d("Click", "")
         findNavController().navigate(R.id.action_viewPagerFragment_to_descriptionFragment, bundle)
     }
 

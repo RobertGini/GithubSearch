@@ -12,7 +12,7 @@ import com.example.githubsearch.domain.RepoItemsEntity
 
 class SearchAdapter(
     private var data: List<RepoItemsEntity>,
-    private val onItemClick: (position: Int) -> Unit
+    private val onItemClick: (data: RepoItemsEntity) -> Unit
 ) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -25,11 +25,8 @@ class SearchAdapter(
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        holder.bind(
-            data[position],
-            position
-        )
-        holder.itemView.setOnClickListener { onItemClick(position) }
+        holder.bind(data[position], position)
+        holder.itemView.setOnClickListener { onItemClick(data[position]) }
     }
 
     override fun getItemCount(): Int = data.size

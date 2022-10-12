@@ -25,6 +25,7 @@ import com.example.githubsearch.ui.viewModelFactory.ViewModelFactory
 import com.example.githubsearch.utils.Status
 import com.example.githubsearch.utils.SwipeCallback
 import com.example.githubsearch.utils.hideKeyboard
+import kotlinx.serialization.json.Json
 
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
@@ -71,8 +72,8 @@ class SearchFragment : Fragment() {
     }
 
     private fun showRepoList(data: List<RepoItemsEntity>) {
-        searchAdapter = SearchAdapter(data) { position ->
-            onItemClick(position)
+        searchAdapter = SearchAdapter(data) { data ->
+            onItemClick(data)
         }
         searchRv.adapter = searchAdapter
     }
@@ -92,7 +93,6 @@ class SearchFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
                     setupObservers(query)
-                    bundle.putString("RepoName", query)
                     hideKeyboard()
                 }
                 return false
@@ -133,8 +133,10 @@ class SearchFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(searchRv)
     }
 
-    private fun onItemClick(position: Int) {
-        //Log.d("Click", item)
+    private fun onItemClick(data: RepoItemsEntity) {
+        val jsonRepo = Json.encodeToString(RepoItemsEntity.serializer(), data)
+        bundle.putString("RepoName", jsonRepo)
+        Log.d("Click", jsonRepo)
         findNavController().navigate(R.id.action_viewPagerFragment_to_descriptionFragment, bundle)
     }
 

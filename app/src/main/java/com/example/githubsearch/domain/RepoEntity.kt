@@ -1,11 +1,14 @@
 package com.example.githubsearch.domain
 
-class RepoEntity(
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class RepoEntity(
     val itemsRepo: List<RepoItemsEntity>
 )
 
-
-class RepoItemsEntity(
+@Serializable
+data class RepoItemsEntity(
     val full_name: String = "",
     val description: String = "",
     val forks: String = "",
