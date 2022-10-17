@@ -81,6 +81,12 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
     implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
 
+    //di
+    implementation "com.google.dagger:dagger-android:2.44"
+    implementation "com.google.dagger:dagger-android-support:2.44"
+    kapt "com.google.dagger:dagger-compiler:2.44"
+    kapt "com.google.dagger:dagger-android-processor:2.44"
+
     //serialized
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2"
 

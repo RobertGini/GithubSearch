@@ -50,7 +50,7 @@ class DescriptionFragment : Fragment() {
         descModel = ViewModelProvider(
             this,
             ViewModelFactory(
-                ApiRepository(RetrofitClient.apiService),
+                ApiRepository(RetrofitClient().provideRetrofit()),
                 (requireActivity().application as RepoApplication).repository
             )
         ).get(DescriptionViewModel::class.java)

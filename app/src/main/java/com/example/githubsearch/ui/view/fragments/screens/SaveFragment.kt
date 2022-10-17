@@ -67,7 +67,7 @@ class SaveFragment : Fragment() {
         saveModel = ViewModelProvider(
             this,
             ViewModelFactory(
-                ApiRepository(RetrofitClient.apiService),
+                ApiRepository(RetrofitClient().provideRetrofit()),
                 (requireActivity().application as RepoApplication).repository
             )
         ).get(SaveViewModel::class.java)
