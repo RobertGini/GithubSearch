@@ -7,8 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.githubsearch.data.repositories.RoomRepository
 import com.example.githubsearch.data.room.RepoDb
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SaveViewModel(
+class SaveViewModel @Inject constructor(
     private val roomRepository: RoomRepository
     ): ViewModel() {
     val getDataFromDatabase: LiveData<List<RepoDb>> = roomRepository.getDataFromDatabase.asLiveData()

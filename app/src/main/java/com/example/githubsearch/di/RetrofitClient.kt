@@ -1,12 +1,10 @@
-package com.example.githubsearch.data.api
+package com.example.githubsearch.di
 
+import com.example.githubsearch.data.api.ApiService
 import dagger.Module
 import dagger.Provides
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -21,11 +19,16 @@ class RetrofitClient {
 
     @Singleton
     @Provides
-    fun provideRetrofit() :ApiService {
+    fun provideRetrofit() : Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
-            .create(ApiService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideApiService(retrofit: Retrofit) : ApiService {
+        return retrofit.create(ApiService::class.java)
     }
 }

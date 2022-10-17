@@ -4,14 +4,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.githubsearch.data.repositories.ApiRepository
+import com.example.githubsearch.data.repositories.RepositoryImpl
 import com.example.githubsearch.data.repositories.RoomRepository
 import com.example.githubsearch.data.room.RepoDb
 import com.example.githubsearch.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SearchViewModel(
-    private val apiRepository: ApiRepository,
+class SearchViewModel @Inject constructor(
+    private val apiRepository: RepositoryImpl,
     private val roomRepository: RoomRepository
     ) : ViewModel() {
     fun showList(query: String) = liveData(Dispatchers.IO) {

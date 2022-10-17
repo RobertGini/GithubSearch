@@ -1,5 +1,6 @@
 package com.example.githubsearch.ui.view.fragments.screens
 
+import android.app.Application
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,33 +8,35 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.R
-import com.example.githubsearch.data.api.RetrofitClient
-import com.example.githubsearch.data.repositories.ApiRepository
-import com.example.githubsearch.data.room.RepoApplication
 import com.example.githubsearch.data.room.RepoDb
 import com.example.githubsearch.databinding.FragmentSearchBinding
+import com.example.githubsearch.di.ApplicationClass
+import com.example.githubsearch.di.viewModel.ViewModelFactory
 import com.example.githubsearch.domain.RepoItemsEntity
 import com.example.githubsearch.ui.adapters.SearchAdapter
 import com.example.githubsearch.ui.viewModel.SearchViewModel
-import com.example.githubsearch.ui.viewModelFactory.ViewModelFactory
 import com.example.githubsearch.utils.Status
-import com.example.githubsearch.utils.SwipeCallback
 import com.example.githubsearch.utils.hideKeyboard
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
 
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
     private lateinit var searchAdapter: SearchAdapter
-    private lateinit var searchModel: SearchViewModel
+    //private lateinit var searchModel: SearchViewModel
     private lateinit var itemTouchHelper: ItemTouchHelper
     private lateinit var searchRv: RecyclerView
     private var bundle = Bundle()
+    @Inject lateinit var viewModelFactory: ViewModelFactory
+    private val searchModel: SearchViewModel by viewModels { viewModelFactory }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,10 +44,14 @@ class SearchFragment : Fragment() {
     ): View? {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
 
-        setupViewModel()
         setupAdapter()
         clickOnSearchView()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        //setupViewModel()
     }
 
     private fun setupObservers(query: String) {
@@ -79,13 +86,18 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        searchModel = ViewModelProvider(
+        val searchModel = ViewModelProvider(
             this,
-            ViewModelFactory(
-                ApiRepository(RetrofitClient().provideRetrofit()),
-                (requireActivity().application as RepoApplication).repository
-            )
-        ).get(SearchViewModel::class.java)
+            viewModelFactory
+        )[SearchViewModel::class.java]
+
+//        searchModel = ViewModelProvider(
+//            this,
+//            ViewModelFactory(
+//                ApiRepository(RetrofitClient()),
+//                (requireActivity().application as RepoApplication).repository
+//            )
+//        ).get(SearchViewModel::class.java)
     }
 
     private fun clickOnSearchView() {
@@ -115,14 +127,15 @@ class SearchFragment : Fragment() {
             ): Boolean = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                when(direction) {
+                when (direction) {
                     ItemTouchHelper.RIGHT -> {
                         val position = viewHolder.bindingAdapterPosition
                         val item = RepoDb(
                             data[position].full_name,
                             data[position].description,
                             data[position].forks,
-                            data[position].created_at)
+                            data[position].created_at
+                        )
                         searchModel.insert(item)
                         Log.d("Swipe", data[position].full_name)
                     }

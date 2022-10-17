@@ -13,16 +13,18 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.R
-import com.example.githubsearch.data.api.RetrofitClient
+import com.example.githubsearch.di.RetrofitClient
 import com.example.githubsearch.data.repositories.ApiRepository
 import com.example.githubsearch.data.room.RepoApplication
 import com.example.githubsearch.data.room.RepoDb
 import com.example.githubsearch.databinding.FragmentSaveBinding
 import com.example.githubsearch.ui.adapters.SaveAdapter
 import com.example.githubsearch.ui.viewModel.SaveViewModel
-import com.example.githubsearch.ui.viewModelFactory.ViewModelFactory
+import com.example.githubsearch.di.viewModel.ViewModelFactory
+import com.example.githubsearch.ui.viewModel.DescriptionViewModel
 import com.example.githubsearch.utils.hideKeyboard
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
 
 class SaveFragment : Fragment() {
     private lateinit var binding: FragmentSaveBinding
@@ -31,6 +33,8 @@ class SaveFragment : Fragment() {
     private lateinit var saveModel: SaveViewModel
     private lateinit var itemTouchHelper: ItemTouchHelper
     private var bundle = Bundle()
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,11 +70,15 @@ class SaveFragment : Fragment() {
     private fun setupViewModel() {
         saveModel = ViewModelProvider(
             this,
-            ViewModelFactory(
-                ApiRepository(RetrofitClient().provideRetrofit()),
-                (requireActivity().application as RepoApplication).repository
-            )
-        ).get(SaveViewModel::class.java)
+            viewModelFactory
+        )[SaveViewModel::class.java]
+//        saveModel = ViewModelProvider(
+//            this,
+//            ViewModelFactory(
+//                ApiRepository(RetrofitClient().provideRetrofit()),
+//                (requireActivity().application as RepoApplication).repository
+//            )
+//        ).get(SaveViewModel::class.java)
     }
 
     private fun clickOnSearchView() {
