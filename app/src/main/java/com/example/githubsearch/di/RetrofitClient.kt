@@ -11,12 +11,6 @@ import javax.inject.Singleton
 class RetrofitClient {
     private val baseUrl = "https://api.github.com/"
 
-//    private val retrofit = Retrofit.Builder()
-//        .baseUrl(baseUrl)
-//        .build()
-//
-//    val apiService: ApiService = retrofit.create(ApiService::class.java)
-
     @Singleton
     @Provides
     fun provideRetrofit() : Retrofit {

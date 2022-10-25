@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/search_fragment"
-        android:name="com.example.githubsearch.ui.view.fragments.screens.SearchFragment"
+        android:name="com.example.githubsearch.presentation.view.fragments.screens.SearchFragment"
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search">
 
     </fragment>
     <fragment
         android:id="@+id/save_fragment"
-        android:name="com.example.githubsearch.ui.view.fragments.screens.SaveFragment"
+        android:name="com.example.githubsearch.presentation.view.fragments.screens.SaveFragment"
         android:label="SaveFragment"
         tools:layout="@layout/fragment_save"/>
     <fragment
         android:id="@+id/login_fragment"
-        android:name="com.example.githubsearch.ui.view.fragments.LoginFragment"
+        android:name="com.example.githubsearch.presentation.view.fragments.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/viewPagerFragment"
-        android:name="com.example.githubsearch.ui.view.fragments.ViewPagerFragment"
+        android:name="com.example.githubsearch.presentation.view.fragments.ViewPagerFragment"
         android:label="fragment_view_pager"
         tools:layout="@layout/fragment_view_pager" >
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/descriptionFragment"
-        android:name="com.example.githubsearch.ui.view.fragments.DescriptionFragment"
+        android:name="com.example.githubsearch.presentation.view.fragments.DescriptionFragment"
         android:label="fragment_description"
         tools:layout="@layout/fragment_description">
         <argument
