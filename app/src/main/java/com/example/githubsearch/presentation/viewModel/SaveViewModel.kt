@@ -12,12 +12,12 @@ import javax.inject.Inject
 class SaveViewModel @Inject constructor(
     private val repository: RepositoryImpl
     ): ViewModel() {
-    val getDataFromDatabase: LiveData<List<RepoDb>> = repository.getDataFromDatabase.asLiveData()
-
-    fun insert(repoDb: RepoDb) = viewModelScope.launch {
-        repository.insert(repoDb)
-    }
-    fun delete(repoDb: RepoDb) = viewModelScope.launch {
-        repository.delete(repoDb)
-    }
+//    val getDataFromDatabase: LiveData<List<RepoDb>> = repository.getDataFromDatabase.asLiveData()
+//
+//    fun insert(repoDb: RepoDb) = viewModelScope.launch {
+//        repository.insert(repoDb)
+//    }
+//    fun delete(repoDb: RepoDb) = viewModelScope.launch {
+//        repository.delete(repoDb)
+//    }
 }

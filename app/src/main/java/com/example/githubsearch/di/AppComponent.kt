@@ -1,6 +1,7 @@
 package com.example.githubsearch.di
 
 import android.app.Application
+import com.example.githubsearch.data.room.RepoDao
 import com.example.githubsearch.di.viewModelFactory.ViewModelModule
 import dagger.BindsInstance
 import dagger.Component
@@ -12,8 +13,8 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [
-        DataModule::class,
-        AndroidSupportInjectionModule::class,
+        //DataModule::class,
+        //AndroidSupportInjectionModule::class,
         AndroidInjectionModule::class,
         ActivityBindingModule::class,
         AppModule::class
@@ -22,10 +23,12 @@ import javax.inject.Singleton
 interface AppComponent : AndroidInjector<ApplicationClass> {
     @Component.Builder
     interface Builder {
-
         @BindsInstance
         fun application(application: Application): Builder
 
         fun build(): AppComponent
-    }
+
+        }
+
+    override fun inject(applicationClass: ApplicationClass)
 }

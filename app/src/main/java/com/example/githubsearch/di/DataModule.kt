@@ -6,10 +6,11 @@ import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton
 
-@Module(includes = [
-    RetrofitClient::class,
-    RoomModule::class]
-    )
+@Module(
+    includes = [
+        RetrofitClient::class]
+        //RoomModule::class]
+)
 abstract class DataModule {
 
     @Singleton

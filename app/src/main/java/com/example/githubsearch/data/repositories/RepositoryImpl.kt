@@ -11,22 +11,22 @@ import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
     private val apiService: ApiService,
-    private val repoDao: RepoDao
+    //private val repoDao: RepoDao
 ) : Repository {
     //Retrofit
     suspend fun getSearchRepository(query: String) = ResponseDataMapper().mapResponse(
         apiService.getSearchRepository(query)
     )
     //Room
-    val getDataFromDatabase: Flow<List<RepoDb>> = repoDao.getAll()
-
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun insert(repoDb: RepoDb){
-        repoDao.insert(repoDb)
-    }
-
-    suspend fun delete(repoDb: RepoDb){
-        repoDao.delete(repoDb)
-    }
+//    val getDataFromDatabase: Flow<List<RepoDb>> = repoDao.getAll()
+//
+//    @Suppress("RedundantSuspendModifier")
+//    @WorkerThread
+//    suspend fun insert(repoDb: RepoDb){
+//        repoDao.insert(repoDb)
+//    }
+//
+//    suspend fun delete(repoDb: RepoDb){
+//        repoDao.delete(repoDb)
+//    }
 }

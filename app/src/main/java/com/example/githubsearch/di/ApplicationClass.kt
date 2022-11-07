@@ -4,15 +4,10 @@ import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 
 class ApplicationClass: DaggerApplication() {
-    lateinit var appComponent: AppComponent
+    private val applicationInjector = DaggerAppComponent
+        .builder()
+        .application(this)
+        .build()
 
-    override fun onCreate() {
-        super.onCreate()
-    }
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        appComponent = DaggerAppComponent.builder()
-            .application(this)
-            .build()
-        return appComponent
-    }
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> = applicationInjector
 }

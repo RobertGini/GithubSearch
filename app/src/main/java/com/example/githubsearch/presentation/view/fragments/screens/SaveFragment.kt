@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -26,11 +27,11 @@ class SaveFragment : Fragment() {
     private lateinit var binding: FragmentSaveBinding
     private lateinit var saveAdapter: SaveAdapter
     private lateinit var saveRv: RecyclerView
-    private lateinit var saveModel: SaveViewModel
     private lateinit var itemTouchHelper: ItemTouchHelper
     private var bundle = Bundle()
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+    val saveModel: SaveViewModel by viewModels { viewModelFactory }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,19 +39,19 @@ class SaveFragment : Fragment() {
     ): View? {
         binding = FragmentSaveBinding.inflate(inflater, container, false)
         setupAdapter()
-        setupList()
+        //setupList()
         swipeToDelete()
         clickOnSearchView()
         return binding.root
     }
 
-    private fun setupList() {
-        saveModel.getDataFromDatabase.observe(viewLifecycleOwner) {
-            saveAdapter.submitList(it)
-            bundle.putString("RepoName",it[0].full_name)
-            Log.d("ClickOnItem", it[0].full_name)
-        }
-    }
+//    private fun setupList() {
+//        saveModel.getDataFromDatabase.observe(viewLifecycleOwner) {
+//            saveAdapter.submitList(it)
+//            bundle.putString("RepoName",it[0].full_name)
+//            Log.d("ClickOnItem", it[0].full_name)
+//        }
+//    }
 
     private fun setupAdapter() {
         saveRv = binding.rcSaved
@@ -62,20 +63,19 @@ class SaveFragment : Fragment() {
         saveRv.adapter = saveAdapter
     }
 
-    @Inject
-    fun setupViewModel() {
-        saveModel = ViewModelProvider(
-            this,
-            viewModelFactory
-        )[SaveViewModel::class.java]
+//    fun setupViewModel() {
 //        saveModel = ViewModelProvider(
 //            this,
-//            ViewModelFactory(
-//                ApiRepository(RetrofitClient().provideRetrofit()),
-//                (requireActivity().application as RepoApplication).repository
-//            )
-//        ).get(SaveViewModel::class.java)
-    }
+//            viewModelFactory
+//        )[SaveViewModel::class.java]
+////        saveModel = ViewModelProvider(
+////            this,
+////            ViewModelFactory(
+////                ApiRepository(RetrofitClient().provideRetrofit()),
+////                (requireActivity().application as RepoApplication).repository
+////            )
+////        ).get(SaveViewModel::class.java)
+//    }
 
     private fun clickOnSearchView() {
         binding.searchSaved.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -108,7 +108,7 @@ class SaveFragment : Fragment() {
                     ItemTouchHelper.LEFT -> {
                         val position = viewHolder.bindingAdapterPosition
                         val repoDb = saveAdapter.currentList.get(position)
-                        saveModel.delete(repoDb)
+                        //saveModel.delete(repoDb)
                         Log.d("Swipe", "Swiped left")
                     }
                 }

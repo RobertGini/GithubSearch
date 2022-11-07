@@ -22,10 +22,10 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun insert(repoDb: RepoDb) = viewModelScope.launch {
-        repository.insert(repoDb)
-    }
-    fun delete(repoDb: RepoDb) = viewModelScope.launch {
-        repository.delete(repoDb)
-    }
+//    fun insert(repoDb: RepoDb) = viewModelScope.launch {
+//        repository.insert(repoDb)
+//    }
+//    fun delete(repoDb: RepoDb) = viewModelScope.launch {
+//        repository.delete(repoDb)
+//    }
 }
