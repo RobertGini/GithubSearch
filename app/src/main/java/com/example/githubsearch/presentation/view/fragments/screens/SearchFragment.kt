@@ -1,13 +1,11 @@
 package com.example.githubsearch.presentation.view.fragments.screens
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -17,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.R
 import com.example.githubsearch.data.room.RepoDb
 import com.example.githubsearch.databinding.FragmentSearchBinding
-import com.example.githubsearch.di.ApplicationClass
 import com.example.githubsearch.di.viewModelFactory.ViewModelFactory
 import com.example.githubsearch.domain.RepoItemsEntity
 import com.example.githubsearch.presentation.adapters.SearchAdapter
@@ -36,7 +33,6 @@ class SearchFragment : DaggerFragment(R.layout.fragment_search) {
     private var bundle = Bundle()
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    //lateinit var searchModel: SearchViewModel
     val searchModel: SearchViewModel by viewModels { viewModelFactory }
 
     override fun onCreateView(
@@ -47,11 +43,6 @@ class SearchFragment : DaggerFragment(R.layout.fragment_search) {
         setupAdapter()
         clickOnSearchView()
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        //searchModel = ViewModelProvider(this, viewModelFactory)[SearchViewModel::class.java]
     }
 
     private fun setupObservers(query: String) {
@@ -83,11 +74,6 @@ class SearchFragment : DaggerFragment(R.layout.fragment_search) {
             onItemClick(data)
         }
         searchRv.adapter = searchAdapter
-    }
-
-
-    fun setupViewModel(viewModelFactory: ViewModelFactory) {
-        //searchModel = ViewModelProvider(this, viewModelFactory)[SearchViewModel::class.java]
     }
 
     private fun clickOnSearchView() {
@@ -126,7 +112,7 @@ class SearchFragment : DaggerFragment(R.layout.fragment_search) {
                             data[position].forks,
                             data[position].created_at
                         )
-                        //searchModel.insert(item)
+                        searchModel.insert(item)
                         Log.d("Swipe", data[position].full_name)
                     }
                 }

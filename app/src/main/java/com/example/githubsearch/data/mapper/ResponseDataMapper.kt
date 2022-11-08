@@ -12,7 +12,6 @@ class ResponseDataMapper {
             itemsRepo = response.items?.map { transformData(it) }.orEmpty()
         )
     }
-
     private fun transformData(response: RepositoryResponse): RepoItemsEntity {
         return RepoItemsEntity(
             full_name = response.full_name.toString(),
@@ -21,5 +20,4 @@ class ResponseDataMapper {
             created_at = response.created_at.toString()
         )
     }
-
 }

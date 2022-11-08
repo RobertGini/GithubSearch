@@ -14,5 +14,4 @@ abstract class ActivityBindingModule {
         ]
     )
     abstract fun providesMainActivity(): MainActivity
-
 }

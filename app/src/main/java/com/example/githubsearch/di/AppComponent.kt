@@ -13,8 +13,6 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [
-        //DataModule::class,
-        //AndroidSupportInjectionModule::class,
         AndroidInjectionModule::class,
         ActivityBindingModule::class,
         AppModule::class
@@ -27,8 +25,7 @@ interface AppComponent : AndroidInjector<ApplicationClass> {
         fun application(application: Application): Builder
 
         fun build(): AppComponent
-
-        }
+    }
 
     override fun inject(applicationClass: ApplicationClass)
 }

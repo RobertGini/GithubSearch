@@ -20,17 +20,18 @@ import com.example.githubsearch.presentation.adapters.SaveAdapter
 import com.example.githubsearch.presentation.viewModel.SaveViewModel
 import com.example.githubsearch.di.viewModelFactory.ViewModelFactory
 import com.example.githubsearch.presentation.utils.hideKeyboard
+import dagger.android.support.DaggerFragment
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
-class SaveFragment : Fragment() {
+class SaveFragment : DaggerFragment(R.layout.fragment_save) {
     private lateinit var binding: FragmentSaveBinding
     private lateinit var saveAdapter: SaveAdapter
     private lateinit var saveRv: RecyclerView
     private lateinit var itemTouchHelper: ItemTouchHelper
     private var bundle = Bundle()
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     val saveModel: SaveViewModel by viewModels { viewModelFactory }
 
     override fun onCreateView(
@@ -39,19 +40,19 @@ class SaveFragment : Fragment() {
     ): View? {
         binding = FragmentSaveBinding.inflate(inflater, container, false)
         setupAdapter()
-        //setupList()
+        setupList()
         swipeToDelete()
         clickOnSearchView()
         return binding.root
     }
 
-//    private fun setupList() {
-//        saveModel.getDataFromDatabase.observe(viewLifecycleOwner) {
-//            saveAdapter.submitList(it)
-//            bundle.putString("RepoName",it[0].full_name)
-//            Log.d("ClickOnItem", it[0].full_name)
-//        }
-//    }
+    private fun setupList() {
+        saveModel.getDataFromDatabase.observe(viewLifecycleOwner) {
+            saveAdapter.submitList(it)
+            bundle.putString("RepoName",it[0].full_name)
+            Log.d("ClickOnItem", it[0].full_name)
+        }
+    }
 
     private fun setupAdapter() {
         saveRv = binding.rcSaved
@@ -62,20 +63,6 @@ class SaveFragment : Fragment() {
         }
         saveRv.adapter = saveAdapter
     }
-
-//    fun setupViewModel() {
-//        saveModel = ViewModelProvider(
-//            this,
-//            viewModelFactory
-//        )[SaveViewModel::class.java]
-////        saveModel = ViewModelProvider(
-////            this,
-////            ViewModelFactory(
-////                ApiRepository(RetrofitClient().provideRetrofit()),
-////                (requireActivity().application as RepoApplication).repository
-////            )
-////        ).get(SaveViewModel::class.java)
-//    }
 
     private fun clickOnSearchView() {
         binding.searchSaved.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -108,7 +95,7 @@ class SaveFragment : Fragment() {
                     ItemTouchHelper.LEFT -> {
                         val position = viewHolder.bindingAdapterPosition
                         val repoDb = saveAdapter.currentList.get(position)
-                        //saveModel.delete(repoDb)
+                        saveModel.delete(repoDb)
                         Log.d("Swipe", "Swiped left")
                     }
                 }
