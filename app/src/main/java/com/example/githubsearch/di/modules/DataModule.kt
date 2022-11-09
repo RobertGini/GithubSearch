@@ -1,4 +1,4 @@
-package com.example.githubsearch.di
+package com.example.githubsearch.di.modules
 
 import com.example.githubsearch.data.repositories.RepositoryImpl
 import com.example.githubsearch.data.repositories.RepositoryRoom
@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Module(
     includes = [
-        RetrofitClient::class,
+        NetworkModule::class,
         RoomModule::class]
 )
 abstract class DataModule {

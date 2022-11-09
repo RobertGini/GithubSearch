@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -18,18 +17,24 @@ import com.example.githubsearch.data.room.RepoDb
 import com.example.githubsearch.databinding.FragmentSaveBinding
 import com.example.githubsearch.presentation.adapters.SaveAdapter
 import com.example.githubsearch.presentation.viewModel.SaveViewModel
-import com.example.githubsearch.di.viewModelFactory.ViewModelFactory
-import com.example.githubsearch.presentation.utils.hideKeyboard
+import com.example.githubsearch.utils.hideKeyboard
 import dagger.android.support.DaggerFragment
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 class SaveFragment : DaggerFragment(R.layout.fragment_save) {
-    private lateinit var binding: FragmentSaveBinding
-    private lateinit var saveAdapter: SaveAdapter
-    private lateinit var saveRv: RecyclerView
+    private var _binding: FragmentSaveBinding? = null
+    private val binding get() = _binding!!
+
+    private val saveAdapter by lazy {
+        SaveAdapter { position ->
+            onItemClick(position)
+        }
+    }
     private lateinit var itemTouchHelper: ItemTouchHelper
+
     private var bundle = Bundle()
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     val saveModel: SaveViewModel by viewModels { viewModelFactory }
@@ -37,31 +42,32 @@ class SaveFragment : DaggerFragment(R.layout.fragment_save) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentSaveBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = FragmentSaveBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupAdapter()
         setupList()
+
         swipeToDelete()
         clickOnSearchView()
-        return binding.root
     }
 
     private fun setupList() {
         saveModel.getDataFromDatabase.observe(viewLifecycleOwner) {
             saveAdapter.submitList(it)
-            bundle.putString("RepoName",it[0].full_name)
+            bundle.putString("RepoName", it[0].full_name)
             Log.d("ClickOnItem", it[0].full_name)
         }
     }
 
     private fun setupAdapter() {
-        saveRv = binding.rcSaved
-        binding.rcSaved.setHasFixedSize(true)
-        binding.rcSaved.layoutManager = LinearLayoutManager(context)
-        saveAdapter = SaveAdapter{position ->
-            onItemClick(position)
-        }
-        saveRv.adapter = saveAdapter
+        binding.rcSaved.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.rcSaved.adapter = saveAdapter
     }
 
     private fun clickOnSearchView() {
@@ -78,12 +84,11 @@ class SaveFragment : DaggerFragment(R.layout.fragment_save) {
                 return false
             }
         })
-
     }
 
-    private fun swipeToDelete(){
+    private fun swipeToDelete() {
         val simpleCallback = object :
-            ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -91,10 +96,10 @@ class SaveFragment : DaggerFragment(R.layout.fragment_save) {
             ): Boolean = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                when(direction) {
+                when (direction) {
                     ItemTouchHelper.LEFT -> {
                         val position = viewHolder.bindingAdapterPosition
-                        val repoDb = saveAdapter.currentList.get(position)
+                        val repoDb = saveAdapter.currentList[position]
                         saveModel.delete(repoDb)
                         Log.d("Swipe", "Swiped left")
                     }
@@ -102,7 +107,7 @@ class SaveFragment : DaggerFragment(R.layout.fragment_save) {
             }
         }
         itemTouchHelper = ItemTouchHelper(simpleCallback)
-        itemTouchHelper.attachToRecyclerView(saveRv)
+        itemTouchHelper.attachToRecyclerView(binding.rcSaved)
     }
 
     private fun onItemClick(data: RepoDb) {

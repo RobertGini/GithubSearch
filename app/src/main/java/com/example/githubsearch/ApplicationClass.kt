@@ -1,5 +1,6 @@
-package com.example.githubsearch.di
+package com.example.githubsearch
 
+import com.example.githubsearch.di.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 

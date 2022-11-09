@@ -1,14 +1,11 @@
-package com.example.githubsearch.di
+package com.example.githubsearch.di.modules
 
 import android.app.Application
-import android.content.Context
 import androidx.room.Room
 import com.example.githubsearch.data.room.RepoDao
 import com.example.githubsearch.data.room.RepoDatabase
 import dagger.Module
 import dagger.Provides
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import javax.inject.Singleton
 
 @Module

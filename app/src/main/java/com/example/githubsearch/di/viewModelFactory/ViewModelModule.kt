@@ -2,6 +2,7 @@ package com.example.githubsearch.di.viewModelFactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.githubsearch.presentation.viewModel.LoginViewModel
 import com.example.githubsearch.presentation.viewModel.SaveViewModel
 import com.example.githubsearch.presentation.viewModel.SearchViewModel
 import dagger.Binds
@@ -20,6 +21,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SaveViewModel::class)
     abstract fun bindSaveViewModel(viewModel: SaveViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LoginViewModel::class)
+    abstract fun bindLoginViewModel(viewModel: LoginViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory

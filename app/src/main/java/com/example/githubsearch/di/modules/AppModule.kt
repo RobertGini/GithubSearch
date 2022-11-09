@@ -1,4 +1,4 @@
-package com.example.githubsearch.di
+package com.example.githubsearch.di.modules
 
 import com.example.githubsearch.di.viewModelFactory.ViewModelModule
 import dagger.Module

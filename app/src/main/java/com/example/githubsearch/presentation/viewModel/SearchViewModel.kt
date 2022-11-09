@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.githubsearch.data.repositories.RepositoryImpl
 import com.example.githubsearch.data.repositories.RepositoryRoom
 import com.example.githubsearch.data.room.RepoDb
-import com.example.githubsearch.presentation.utils.Resource
+import com.example.githubsearch.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject

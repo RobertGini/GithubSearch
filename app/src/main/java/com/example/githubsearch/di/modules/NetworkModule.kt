@@ -1,4 +1,4 @@
-package com.example.githubsearch.di
+package com.example.githubsearch.di.modules
 
 import com.example.githubsearch.data.api.ApiService
 import dagger.Module
@@ -8,7 +8,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
-class RetrofitClient {
+class NetworkModule {
     private val baseUrl = "https://api.github.com/"
 
     @Singleton

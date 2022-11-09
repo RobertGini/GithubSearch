@@ -1,39 +1,44 @@
 package com.example.githubsearch.presentation.view.fragments
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.FragmentLoginBinding
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
+import com.example.githubsearch.presentation.viewModel.LoginViewModel
+import com.example.githubsearch.utils.getClient
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
-class LoginFragment : Fragment() {
-    lateinit var launcher: ActivityResultLauncher<Intent>
-    private lateinit var binding: FragmentLoginBinding
-    lateinit var auth: FirebaseAuth
+class LoginFragment : DaggerFragment(R.layout.fragment_login) {
+    private val auth by lazy { Firebase.auth }
+
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    val loginViewModel: LoginViewModel by viewModels { viewModelFactory }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentLoginBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        auth = Firebase.auth
-        setupAuth()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.googleHolder.setOnClickListener {
             signInWithGoogle()
         }
@@ -41,52 +46,22 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_login_fragment_to_viewPagerFragment)
         }
         checkAuthState()
-
-        return binding.root
     }
 
-    private fun setupAuth(){
-        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
-            try {
-                val account = task.getResult(ApiException::class.java)
-                if (account != null) {
-                    firebaseAuthWithGoogle(account.idToken!!)
-                }
-            } catch (e: ApiException){
-                Log.d("MyLog", "Api Exception")
-            }
+    private val setupAuth =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            loginViewModel.setupSignIn(result)
+            checkAuthState()
         }
+
+    private fun signInWithGoogle() {
+        val signInClient = getClient(requireContext())
+        setupAuth.launch((signInClient.signInIntent))
+
     }
 
-    private fun getClient(): GoogleSignInClient {
-        val gso = GoogleSignInOptions
-            .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        return GoogleSignIn.getClient(requireActivity(), gso)
-    }
-
-    private fun signInWithGoogle(){
-        val signInClient = getClient()
-        launcher.launch(signInClient.signInIntent)
-    }
-
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential).addOnCompleteListener{
-            if(it.isSuccessful){
-                checkAuthState()
-                Log.d("MyLog", "Google Sign In Done")
-            }else{
-                Log.d("MyLog", "Google Sign In Error")
-            }
-        }
-    }
-
-    private fun checkAuthState(){
-        if(auth.currentUser != null){
+    private fun checkAuthState() {
+        if (auth.currentUser != null) {
             findNavController().navigate(R.id.action_login_fragment_to_viewPagerFragment)
         }
     }

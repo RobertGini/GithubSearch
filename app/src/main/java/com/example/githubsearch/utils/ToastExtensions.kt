@@ -1,4 +1,4 @@
-package com.example.githubsearch.presentation.utils
+package com.example.githubsearch.utils
 
 import android.content.Context
 import android.widget.Toast

@@ -10,16 +10,20 @@ import com.example.githubsearch.domain.RepoItemsEntity
 import kotlinx.serialization.json.Json
 
 class DescriptionFragment : Fragment() {
-    private lateinit var binding: FragmentDescriptionBinding
+    private var _binding: FragmentDescriptionBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentDescriptionBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = FragmentDescriptionBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         arguments?.takeIf { it.containsKey("RepoName") }?.apply {
-
             val json = Json { ignoreUnknownKeys = true }
             val repoName = json.decodeFromString(
                 RepoItemsEntity.serializer(),
@@ -27,15 +31,12 @@ class DescriptionFragment : Fragment() {
             )
             setDescInfo(repoName)
         }
-        return binding.root
     }
 
-    fun setDescInfo(data: RepoItemsEntity) = with(binding) {
+    private fun setDescInfo(data: RepoItemsEntity) = with(binding) {
         descRepoName.text = data.full_name
         descDescription.text = data.description
         descForks.text = data.forks
         descCreatedAt.text = data.created_at
     }
-
-
 }

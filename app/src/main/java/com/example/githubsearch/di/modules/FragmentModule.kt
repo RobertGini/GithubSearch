@@ -1,4 +1,4 @@
-package com.example.githubsearch.di
+package com.example.githubsearch.di.modules
 
 import com.example.githubsearch.di.scopes.FragmentScoped
 import com.example.githubsearch.presentation.view.fragments.DescriptionFragment
@@ -21,13 +21,5 @@ abstract class FragmentModule {
 
     @FragmentScoped
     @ContributesAndroidInjector
-    abstract fun descriptionFragment(): DescriptionFragment
-
-    @FragmentScoped
-    @ContributesAndroidInjector
     abstract fun loginFragment(): LoginFragment
-
-    @FragmentScoped
-    @ContributesAndroidInjector
-    abstract fun viewPagerFragment(): ViewPagerFragment
 }

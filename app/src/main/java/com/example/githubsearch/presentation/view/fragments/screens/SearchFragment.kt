@@ -15,22 +15,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.R
 import com.example.githubsearch.data.room.RepoDb
 import com.example.githubsearch.databinding.FragmentSearchBinding
-import com.example.githubsearch.di.viewModelFactory.ViewModelFactory
 import com.example.githubsearch.domain.RepoItemsEntity
 import com.example.githubsearch.presentation.adapters.SearchAdapter
-import com.example.githubsearch.presentation.utils.Status
-import com.example.githubsearch.presentation.utils.hideKeyboard
 import com.example.githubsearch.presentation.viewModel.SearchViewModel
+import com.example.githubsearch.utils.Status
+import com.example.githubsearch.utils.hideKeyboard
 import dagger.android.support.DaggerFragment
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 class SearchFragment : DaggerFragment(R.layout.fragment_search) {
-    private lateinit var binding: FragmentSearchBinding
-    private lateinit var searchAdapter: SearchAdapter
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var itemTouchHelper: ItemTouchHelper
-    private lateinit var searchRv: RecyclerView
+
     private var bundle = Bundle()
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     val searchModel: SearchViewModel by viewModels { viewModelFactory }
@@ -38,11 +39,15 @@ class SearchFragment : DaggerFragment(R.layout.fragment_search) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupAdapter()
         clickOnSearchView()
-        return binding.root
     }
 
     private fun setupObservers(query: String) {
@@ -64,16 +69,14 @@ class SearchFragment : DaggerFragment(R.layout.fragment_search) {
     }
 
     private fun setupAdapter() {
-        searchRv = binding.rcSearch
         binding.rcSearch.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
     private fun showRepoList(data: List<RepoItemsEntity>) {
-        searchAdapter = SearchAdapter(data) { data ->
+        binding.rcSearch.adapter = SearchAdapter(data) { data ->
             onItemClick(data)
         }
-        searchRv.adapter = searchAdapter
     }
 
     private fun clickOnSearchView() {
@@ -90,7 +93,6 @@ class SearchFragment : DaggerFragment(R.layout.fragment_search) {
                 return false
             }
         })
-
     }
 
     private fun swipeToFavorite(data: List<RepoItemsEntity>) {
@@ -101,7 +103,6 @@ class SearchFragment : DaggerFragment(R.layout.fragment_search) {
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean = false
-
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 when (direction) {
                     ItemTouchHelper.RIGHT -> {
@@ -119,7 +120,7 @@ class SearchFragment : DaggerFragment(R.layout.fragment_search) {
             }
         }
         itemTouchHelper = ItemTouchHelper(simpleCallback)
-        itemTouchHelper.attachToRecyclerView(searchRv)
+        itemTouchHelper.attachToRecyclerView(binding.rcSearch)
     }
 
     private fun onItemClick(data: RepoItemsEntity) {

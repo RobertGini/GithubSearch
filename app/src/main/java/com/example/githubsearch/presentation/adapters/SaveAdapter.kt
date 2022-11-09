@@ -18,13 +18,12 @@ class SaveAdapter(
     }
 
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
-        val current = getItem(position)
         holder.bind(currentList[position])
         holder.itemView.setOnClickListener { onItemClick(currentList[position]) }
     }
 
     class RepoViewHolder(item: View): RecyclerView.ViewHolder(item) {
-        val binding = RepoItemBinding.bind(item)
+        private val binding = RepoItemBinding.bind(item)
         fun bind(repoDb: RepoDb) = with(binding) {
             rcForks.text = repoDb.forks
             rcFullName.text = repoDb.full_name
@@ -48,5 +47,4 @@ class SaveAdapter(
         }
 
     }
-
 }

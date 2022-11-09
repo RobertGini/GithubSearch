@@ -30,19 +30,10 @@ class SearchAdapter(
 
     override fun getItemCount(): Int = data.size
 
-    fun addList(response: RepoItemsEntity){
-        data += response
-        notifyDataSetChanged()
-    }
-
-    fun clearList() {
-        notifyDataSetChanged()
-    }
-
     class SearchViewHolder(
         item: View
     ) : RecyclerView.ViewHolder(item) {
-        val binding = RepoItemBinding.bind(item)
+        private val binding = RepoItemBinding.bind(item)
         fun bind(response: RepoItemsEntity, position: Int) = with(binding) {
             rcFullName.text = response.full_name
             rcForks.text = response.forks

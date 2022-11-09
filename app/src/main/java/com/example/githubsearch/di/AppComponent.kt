@@ -1,13 +1,13 @@
 package com.example.githubsearch.di
 
 import android.app.Application
-import com.example.githubsearch.data.room.RepoDao
-import com.example.githubsearch.di.viewModelFactory.ViewModelModule
+import com.example.githubsearch.ApplicationClass
+import com.example.githubsearch.di.modules.ActivityBindingModule
+import com.example.githubsearch.di.modules.AppModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
-import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
