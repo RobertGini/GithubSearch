@@ -15,7 +15,6 @@ import com.example.githubsearch.utils.getClient
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.android.support.DaggerFragment
-import okhttp3.internal.wait
 import javax.inject.Inject
 
 class LoginFragment : DaggerFragment(R.layout.fragment_login) {
