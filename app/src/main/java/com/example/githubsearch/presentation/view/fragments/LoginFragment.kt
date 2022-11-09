@@ -15,6 +15,7 @@ import com.example.githubsearch.utils.getClient
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.android.support.DaggerFragment
+import okhttp3.internal.wait
 import javax.inject.Inject
 
 class LoginFragment : DaggerFragment(R.layout.fragment_login) {
@@ -38,6 +39,7 @@ class LoginFragment : DaggerFragment(R.layout.fragment_login) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        checkAuthState()
 
         binding.googleHolder.setOnClickListener {
             signInWithGoogle()
@@ -45,7 +47,6 @@ class LoginFragment : DaggerFragment(R.layout.fragment_login) {
         binding.skipAuthHolder.setOnClickListener {
             findNavController().navigate(R.id.action_login_fragment_to_viewPagerFragment)
         }
-        checkAuthState()
     }
 
     private val setupAuth =
@@ -56,8 +57,7 @@ class LoginFragment : DaggerFragment(R.layout.fragment_login) {
 
     private fun signInWithGoogle() {
         val signInClient = getClient(requireContext())
-        setupAuth.launch((signInClient.signInIntent))
-
+        setupAuth.launch(signInClient.signInIntent)
     }
 
     private fun checkAuthState() {

@@ -40,17 +40,29 @@ class ViewPagerFragment : Fragment() {
         }
     }
 
-
     private fun setupViewPager2() {
-        val adapter = ViewPagerAdapter(
-            childFragmentManager,
-            fragmentList,
-            lifecycle,
-        )
-        binding.viewPager.adapter = adapter
-        TabLayoutMediator(binding.mainTab, binding.viewPager) { tab, pos ->
-            tab.text = fragListTitles[pos]
-        }.attach()
+        if (auth.currentUser != null) {
+            val adapter = ViewPagerAdapter(
+                childFragmentManager,
+                fragmentList,
+                lifecycle,
+            )
+            binding.viewPager.adapter = adapter
+            TabLayoutMediator(binding.mainTab, binding.viewPager) { tab, pos ->
+                tab.text = fragListTitles[pos]
+            }.attach()
+        } else {
+            val adapter = ViewPagerAdapter(
+                childFragmentManager,
+                fragmentListForNonAuth,
+                lifecycle,
+            )
+            binding.viewPager.adapter = adapter
+            TabLayoutMediator(binding.mainTab, binding.viewPager) { tab, pos ->
+                tab.text = fragListTitlesForNonAuth[pos]
+            }.attach()
+        }
+
     }
 
     companion object {
@@ -58,9 +70,15 @@ class ViewPagerFragment : Fragment() {
             SearchFragment.newInstance(),
             SaveFragment.newInstance(),
         )
+        private val fragmentListForNonAuth = listOf(
+            SearchFragment.newInstance(),
+        )
         private val fragListTitles = listOf(
             "Search",
             "Saved",
+        )
+        private val fragListTitlesForNonAuth = listOf(
+            "Search"
         )
     }
 }

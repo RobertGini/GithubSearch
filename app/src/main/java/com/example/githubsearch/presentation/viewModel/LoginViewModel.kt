@@ -4,6 +4,11 @@ import android.content.Intent
 import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
+import com.example.githubsearch.R
+import com.example.githubsearch.presentation.view.fragments.LoginFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
