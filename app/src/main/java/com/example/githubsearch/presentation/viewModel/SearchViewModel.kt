@@ -14,7 +14,7 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val repository: RepositoryImpl,
     private val repositoryRoom: RepositoryRoom
-    ) : ViewModel() {
+) : ViewModel() {
     fun showList(query: String) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
@@ -27,6 +27,7 @@ class SearchViewModel @Inject constructor(
     fun insert(repoDb: RepoDb) = viewModelScope.launch {
         repositoryRoom.insert(repoDb)
     }
+
     fun delete(repoDb: RepoDb) = viewModelScope.launch {
         repositoryRoom.delete(repoDb)
     }

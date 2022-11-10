@@ -1,12 +1,12 @@
 package com.example.githubsearch.utils
 
 import android.content.Context
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
-import androidx.navigation.fragment.findNavController
-import com.example.githubsearch.R
+import androidx.lifecycle.LiveData
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 fun getClient(context: Context): GoogleSignInClient {
     val gso = GoogleSignInOptions
@@ -15,4 +15,19 @@ fun getClient(context: Context): GoogleSignInClient {
         .requestEmail()
         .build()
     return GoogleSignIn.getClient(context, gso)
+}
+
+class FirebaseUserLiveData : LiveData<FirebaseUser?>() {
+    private val firebaseAuth = FirebaseAuth.getInstance()
+    private val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+        value = firebaseAuth.currentUser
+    }
+
+    override fun onActive() {
+        firebaseAuth.addAuthStateListener(authStateListener)
+    }
+
+    override fun onInactive() {
+        firebaseAuth.removeAuthStateListener(authStateListener)
+    }
 }

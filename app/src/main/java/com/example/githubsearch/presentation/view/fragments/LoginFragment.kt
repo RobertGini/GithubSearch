@@ -11,15 +11,12 @@ import androidx.navigation.fragment.findNavController
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.FragmentLoginBinding
 import com.example.githubsearch.presentation.viewModel.LoginViewModel
+import com.example.githubsearch.utils.AuthenticationState
 import com.example.githubsearch.utils.getClient
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class LoginFragment : DaggerFragment(R.layout.fragment_login) {
-    private val auth by lazy { Firebase.auth }
-
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
@@ -38,6 +35,7 @@ class LoginFragment : DaggerFragment(R.layout.fragment_login) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         checkAuthState()
 
         binding.googleHolder.setOnClickListener {
@@ -51,7 +49,6 @@ class LoginFragment : DaggerFragment(R.layout.fragment_login) {
     private val setupAuth =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             loginViewModel.setupSignIn(result)
-            checkAuthState()
         }
 
     private fun signInWithGoogle() {
@@ -60,8 +57,14 @@ class LoginFragment : DaggerFragment(R.layout.fragment_login) {
     }
 
     private fun checkAuthState() {
-        if (auth.currentUser != null) {
-            findNavController().navigate(R.id.action_login_fragment_to_viewPagerFragment)
+        loginViewModel.authenticationState.observe(viewLifecycleOwner) { auth ->
+            when (auth) {
+                AuthenticationState.AUTHENTICATED -> {
+                    findNavController().navigate(R.id.action_login_fragment_to_viewPagerFragment)
+                } else -> {
+                    AuthenticationState.UNAUTHENTICATED
+                }
+            }
         }
     }
 

@@ -3,7 +3,7 @@ package com.example.githubsearch.data.repositories
 import androidx.annotation.WorkerThread
 import com.example.githubsearch.data.room.RepoDao
 import com.example.githubsearch.data.room.RepoDb
-import com.example.githubsearch.domain.Repository
+import com.example.githubsearch.domain.iterators.Repository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

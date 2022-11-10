@@ -6,7 +6,6 @@ import com.example.githubsearch.domain.RepoEntity
 import com.example.githubsearch.domain.RepoItemsEntity
 
 class ResponseDataMapper {
-
     fun mapResponse(response: GithubResponse): RepoEntity {
         return RepoEntity(
             itemsRepo = response.items?.map { transformData(it) }.orEmpty()

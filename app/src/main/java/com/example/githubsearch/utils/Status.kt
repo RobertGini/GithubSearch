@@ -3,5 +3,10 @@ package com.example.githubsearch.utils
 enum class Status {
     SUCCESS,
     ERROR,
-    LOADING
+    LOADING,
+}
+
+enum class AuthenticationState {
+    AUTHENTICATED,
+    UNAUTHENTICATED,
 }

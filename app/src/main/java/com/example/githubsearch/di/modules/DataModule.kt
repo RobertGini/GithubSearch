@@ -2,7 +2,7 @@ package com.example.githubsearch.di.modules
 
 import com.example.githubsearch.data.repositories.RepositoryImpl
 import com.example.githubsearch.data.repositories.RepositoryRoom
-import com.example.githubsearch.domain.Repository
+import com.example.githubsearch.domain.iterators.Repository
 import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton

@@ -14,6 +14,7 @@ import com.example.githubsearch.presentation.view.fragments.screens.SearchFragme
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import dagger.android.support.DaggerFragment
 
 class ViewPagerFragment : Fragment() {
 
@@ -32,7 +33,7 @@ class ViewPagerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupViewPager2()
+        checkAuth()
 
         binding.floatingButton.setOnClickListener {
             auth.signOut()
@@ -40,29 +41,24 @@ class ViewPagerFragment : Fragment() {
         }
     }
 
-    private fun setupViewPager2() {
-        if (auth.currentUser != null) {
+    private fun setupViewPager2(list: List<DaggerFragment>, titles: List<String>) {
             val adapter = ViewPagerAdapter(
                 childFragmentManager,
-                fragmentList,
+                list,
                 lifecycle,
             )
             binding.viewPager.adapter = adapter
             TabLayoutMediator(binding.mainTab, binding.viewPager) { tab, pos ->
-                tab.text = fragListTitles[pos]
+                tab.text = titles[pos]
             }.attach()
-        } else {
-            val adapter = ViewPagerAdapter(
-                childFragmentManager,
-                fragmentListForNonAuth,
-                lifecycle,
-            )
-            binding.viewPager.adapter = adapter
-            TabLayoutMediator(binding.mainTab, binding.viewPager) { tab, pos ->
-                tab.text = fragListTitlesForNonAuth[pos]
-            }.attach()
-        }
+    }
 
+    private fun checkAuth() {
+        if (auth.currentUser != null){
+            setupViewPager2(fragmentList, fragListTitles)
+        } else {
+            setupViewPager2(fragmentList.subList(0,1), fragListTitles.subList(0,1))
+        }
     }
 
     companion object {
@@ -70,15 +66,9 @@ class ViewPagerFragment : Fragment() {
             SearchFragment.newInstance(),
             SaveFragment.newInstance(),
         )
-        private val fragmentListForNonAuth = listOf(
-            SearchFragment.newInstance(),
-        )
         private val fragListTitles = listOf(
             "Search",
             "Saved",
-        )
-        private val fragListTitlesForNonAuth = listOf(
-            "Search"
         )
     }
 }
