@@ -9,7 +9,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class RoomModule() {
+class RoomModule {
     @Singleton
     @Provides
     fun getDao(repoDatabase: RepoDatabase): RepoDao {

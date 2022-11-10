@@ -7,9 +7,10 @@ import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
     private val apiService: ApiService,
+    private val mapper: ResponseDataMapper
 ) : Repository {
     //Retrofit
-    suspend fun getSearchRepository(query: String) = ResponseDataMapper().mapResponse(
+    suspend fun getSearchRepository(query: String) = mapper.mapResponse(
         apiService.getSearchRepository(query)
     )
 }

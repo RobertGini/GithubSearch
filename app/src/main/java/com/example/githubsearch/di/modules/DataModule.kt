@@ -1,5 +1,6 @@
 package com.example.githubsearch.di.modules
 
+import com.example.githubsearch.data.mapper.ResponseDataMapper
 import com.example.githubsearch.data.repositories.RepositoryImpl
 import com.example.githubsearch.data.repositories.RepositoryRoom
 import com.example.githubsearch.domain.iterators.Repository
@@ -10,7 +11,9 @@ import javax.inject.Singleton
 @Module(
     includes = [
         NetworkModule::class,
-        RoomModule::class]
+        RoomModule::class,
+        ResponseDataMapper::class
+    ]
 )
 abstract class DataModule {
     @Singleton
