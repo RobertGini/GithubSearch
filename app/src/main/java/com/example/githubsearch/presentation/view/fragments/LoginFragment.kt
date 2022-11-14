@@ -68,6 +68,11 @@ class LoginFragment : DaggerFragment(R.layout.fragment_login) {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object {
         fun newInstance() = LoginFragment()
     }

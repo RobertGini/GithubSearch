@@ -61,6 +61,11 @@ class ViewPagerFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object {
         private val fragmentList = listOf(
             SearchFragment.newInstance(),
