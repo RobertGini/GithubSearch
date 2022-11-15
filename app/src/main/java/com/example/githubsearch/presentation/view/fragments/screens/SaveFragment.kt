@@ -57,12 +57,10 @@ class SaveFragment : DaggerFragment(R.layout.fragment_save) {
     }
 
     private fun setupList() {
-        if (saveAdapter.currentList.isNotEmpty()) {
-            saveModel.getDataFromDatabase.observe(viewLifecycleOwner) {
-                saveAdapter.submitList(it)
-                bundle.putString("RepoName", it[0].full_name)
-                Log.d("ClickOnItem", it[0].full_name)
-            }
+        saveModel.getDataFromDatabase.observe(viewLifecycleOwner) {
+            saveAdapter.submitList(it)
+            bundle.putString("RepoName", it[0].full_name)
+            Log.d("ClickOnItem", it[0].full_name)
         }
     }
 
